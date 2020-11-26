@@ -24,6 +24,8 @@ def check_sum_counter(values):
     total_sum = sum(map(lambda x: int(x, 16), values))
     return format(total_sum % 65536 + total_sum // 65536, 'x')
 
+instruction = '1. При вводе значений без пробелов, введенная строка будет поделена по 4 символа и расчет будет производиться по ним\n' \
+              '2. Ввод производится в шестнадцатеричной системе счисления\n'
 
 if __name__ == '__main__':
     values = None
@@ -33,8 +35,7 @@ if __name__ == '__main__':
             if values != '':
                 print(check_sum_counter(values))
             elif values == '?':
-                print('1. При вводе значений без пробелов, введенная строка будет поделена по 4 символа и расчет будет производиться по ним\n'
-                      '2. Ввод производится в шестнадцатеричной системе счисления\n')
+                print(instruction)
             else:
                 input('press "Enter" to close\n')
         except TypeError as e:
