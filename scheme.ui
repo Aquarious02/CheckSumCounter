@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>751</width>
+    <height>412</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Калькулятор КС</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="">
+       <layout class="QVBoxLayout" name="verticalLayout_io">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QTextEdit" name="textEdit_input">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextBrowser" name="textBrowser_output">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <widget class="QWidget" name="tab_input_settings">
+        <property name="statusTip">
+         <string>Настройки ввода</string>
+        </property>
+        <attribute name="title">
+         <string>Ввод</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>Системы счисления</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QRadioButton" name="radioButton_bin">
+                <property name="toolTip">
+                 <string>Двоичная</string>
+                </property>
+                <property name="statusTip">
+                 <string>Переводит значения в полях в двоичный вид и позволяет вводить в двоичной системе счисления</string>
+                </property>
+                <property name="text">
+                 <string>Bin</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="radioButton_dec">
+                <property name="toolTip">
+                 <string>Десятичная</string>
+                </property>
+                <property name="statusTip">
+                 <string>Переводит значения в полях в десятичный вид и позволяет вводить в десятичной системе счисления</string>
+                </property>
+                <property name="text">
+                 <string>Dec</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="radioButton_hex">
+                <property name="toolTip">
+                 <string>Шестнадцатеричная</string>
+                </property>
+                <property name="statusTip">
+                 <string>Переводит значения в полях в шестнадцатеричний вид и позволяет вводить в шестнадцатеричной системе счисления</string>
+                </property>
+                <property name="text">
+                 <string>Hex</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolBox" name="toolBox_CS">
+             <property name="currentIndex">
+              <number>1</number>
+             </property>
+             <widget class="QWidget" name="page_sum">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>174</width>
+                <height>148</height>
+               </rect>
+              </property>
+              <attribute name="label">
+               <string>Суммирование</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="page_crc8">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>174</width>
+                <height>141</height>
+               </rect>
+              </property>
+              <attribute name="label">
+               <string>CRC-8</string>
+              </attribute>
+              <layout class="QFormLayout" name="formLayout">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_poly_8">
+                 <property name="statusTip">
+                  <string>Производящий полином</string>
+                 </property>
+                 <property name="text">
+                  <string>Poly</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_poly_8"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_init_8">
+                 <property name="statusTip">
+                  <string>Стартовые данные - значения регистров на момент начала вычислений</string>
+                 </property>
+                 <property name="text">
+                  <string>Init</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lineEdit_init_8"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_revert_8">
+                 <property name="text">
+                  <string>Revert</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QComboBox" name="comboBox_revert_8">
+                 <item>
+                  <property name="text">
+                   <string>True</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>False</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_xor_out_8">
+                 <property name="statusTip">
+                  <string>Число, с которым складывается по модулю 2 полученный результат</string>
+                 </property>
+                 <property name="text">
+                  <string>XorOut</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="lineEdit_XorOut_8"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="page_crc16">
+              <attribute name="label">
+               <string>CRC-16</string>
+              </attribute>
+              <layout class="QFormLayout" name="formLayout_3">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_poly_16">
+                 <property name="statusTip">
+                  <string>Производящий полином</string>
+                 </property>
+                 <property name="text">
+                  <string>Poly</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="lineEdit_poly_16"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_init_16">
+                 <property name="statusTip">
+                  <string>Стартовые данные - значения регистров на момент начала вычислений</string>
+                 </property>
+                 <property name="text">
+                  <string>Init</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lineEdit_init_16"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_revert_16">
+                 <property name="text">
+                  <string>Revert</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QComboBox" name="comboBox_revert_16">
+                 <item>
+                  <property name="text">
+                   <string>True</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>False</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_xor_out_16">
+                 <property name="statusTip">
+                  <string>Число, с которым складывается по модулю 2 полученный результат</string>
+                 </property>
+                 <property name="text">
+                  <string>XorOut</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="lineEdit_XorOut_16"/>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_calculate">
+             <property name="text">
+              <string>Подсчитать</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_output_settings">
+        <property name="statusTip">
+         <string>Настройки отображения</string>
+        </property>
+        <attribute name="title">
+         <string>Вывод</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_format">
+           <property name="text">
+            <string>Формат</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_format">
+           <property name="statusTip">
+            <string>Формат для преобразования вывода</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QCheckBox" name="checkBox_group">
+             <property name="statusTip">
+              <string>Группировать/не группировать байты</string>
+             </property>
+             <property name="text">
+              <string>группировать</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBox_group">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_transform">
+           <property name="statusTip">
+            <string>Преобразовывать введенный текст по формату</string>
+           </property>
+           <property name="text">
+            <string>преобразовывать</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_endian">
+           <property name="statusTip">
+            <string>Порядок байт</string>
+           </property>
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>751</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Настройки</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_by1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="action_by2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="action_by4">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="action_other">
+   <property name="text">
+    <string>Свое</string>
+   </property>
+  </action>
+  <action name="action_little_endian">
+   <property name="text">
+    <string>Little-endian</string>
+   </property>
+  </action>
+  <action name="action_big_endian">
+   <property name="text">
+    <string>Big-endian</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

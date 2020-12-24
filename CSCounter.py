@@ -1,3 +1,25 @@
+from crcmod import mkCrcFun
+
+
+def crc_16(bytes_or_string_to_calculate) -> int:
+    """
+    Подсчет контрольной суммы по алгоритму CRC16 CCITT-FALSE
+    :param bytes_or_string_to_calculate: str or bytes
+    :return: crc16
+    """
+
+    if type(bytes_or_string_to_calculate) is str:
+        bytes_or_string_to_calculate = bytes_or_string_to_calculate.encode('utf8')
+
+    crc16 = mkCrcFun(0x11021, rev=False, initCrc=0xFFFF, xorOut=0x0000)  # Put "1" in polynomial start
+    """From https://issue.life/questions/35205702"""
+
+    # TODO Find out what to put: bytes or string
+    return crc16(bytes_or_string_to_calculate)
+
+# def crc_8
+
+
 def values_handler(str_values: str) -> list:
     """
     values handling. Making list from str. Removing extra symbols
