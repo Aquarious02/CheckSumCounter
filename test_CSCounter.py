@@ -1,5 +1,5 @@
 from unittest import TestCase
-from CSCounter import *
+from CSCounter_lib import *
 
 
 class Test(TestCase):
@@ -30,5 +30,13 @@ class Test(TestCase):
     def test_reverse_bytes(self):
         with self.subTest('Str input'):
             self.assertEqual(['34', '12', '78', '56', '90'], reverse_bytes('1234567890'))
+        with self.subTest('Ling str input'):
+            self.assertEqual(['34', '12', '78', '56', '11', '90', '13', '12', '15', '14', '17', '16', '18'],
+                             reverse_bytes('12345678901112131415161718'))
+
         with self.subTest('List input'):
             self.assertEqual(['34', '12', '78', '56', '90'], reverse_bytes(['1234', '5678', '90']))
+
+    def test_bytes_from_text(self):
+        text = '1234567890'
+        self.assertEqual(b'\x124Vx\x90', bytes_from_text(text))

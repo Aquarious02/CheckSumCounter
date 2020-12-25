@@ -1,4 +1,4 @@
-from CSCounter import *
+from CSCounter_lib import *
 from Temperature_Controller.sandbox import ui_py_converter
 
 if __name__ == '__main__':

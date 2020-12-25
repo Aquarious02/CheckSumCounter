@@ -49,6 +49,9 @@
             <height>25</height>
            </size>
           </property>
+          <property name="statusTip">
+           <string>Вывод результата расчета контрольной суммы. В шестнадцатеричном виде</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -135,8 +138,11 @@
            </item>
            <item>
             <widget class="QToolBox" name="toolBox_CS">
+             <property name="statusTip">
+              <string/>
+             </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="page_sum">
               <property name="geometry">
@@ -144,12 +150,48 @@
                 <x>0</x>
                 <y>0</y>
                 <width>174</width>
-                <height>148</height>
+                <height>141</height>
                </rect>
+              </property>
+              <property name="statusTip">
+               <string>Арифметическое суммированием 16-ти разрядных слов по модулю 65536 с прибавлением бита переноса к младшему разряду суммы после каждой операции сложения</string>
               </property>
               <attribute name="label">
                <string>Суммирование</string>
               </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                 <item>
+                  <widget class="QLabel" name="label_abs_2">
+                   <property name="text">
+                    <string>Модуль</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_abs_2">
+                   <property name="text">
+                    <string>65536 </string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </widget>
              <widget class="QWidget" name="page_crc8">
               <property name="geometry">
@@ -324,7 +366,10 @@
          <item>
           <widget class="QLineEdit" name="lineEdit_format">
            <property name="statusTip">
-            <string>Формат для преобразования вывода</string>
+            <string>Формат для преобразования вывода. В {} будет записываться число</string>
+           </property>
+           <property name="text">
+            <string>{}_ш,</string>
            </property>
           </widget>
          </item>

@@ -1,14 +1,38 @@
 from crcmod import mkCrcFun
 
 
-def text_handler(text, text_format, to_strip=False):
+def text_handler(text: str, text_format: str, to_strip=False) -> str:
     """
     transform text to format. Or strip format
-    :param text:
-    :param text_format:
+    :param text: text to transofrm
+    :param text_format: to use in str.format. e.g. {}_x,
+    :param to_strip: remove format if True
     :return:
     """
-    pass
+    if not to_strip:
+        text_blocks = text.split()
+        for i, number in enumerate(text_blocks):
+            text_blocks[i] = text_format.format(number)
+        return ' '.join(text_blocks)
+    else:
+        text_format = text_format.replace('{}', '')
+        text = text.replace(text_format, '')
+        return text.replace(' ', '')
+
+
+def bytes_from_text(text):
+    if type(text) is list:
+        text = ''.join(text)
+    elif type(text) is str:
+        text = text.replace(' ', '')
+    int_bytes = [int(byte, 16) for byte in group_text(text, 2)]
+    bytes_in_list = [byte.to_bytes(1, byteorder='little') for byte in int_bytes]
+
+    real_bytes = b''
+    for byte in bytes_in_list:
+        real_bytes += byte
+
+    return real_bytes
 
 
 def reverse_bytes(text):
@@ -21,12 +45,15 @@ def reverse_bytes(text):
     elif type(text) is str:
         text = text.replace(' ', '')
     text_bytes = group_text(text, 2)
-    for i in range(0, len(text_bytes) // 2 + 1, 2):
-        text_bytes[i], text_bytes[i + 1] = text_bytes[i + 1], text_bytes[i]
-    return text_bytes
+    if len(text_bytes) != 0:
+        for i in range(0, len(text_bytes) - len(text_bytes) % 2, 2):
+            text_bytes[i], text_bytes[i + 1] = text_bytes[i + 1], text_bytes[i]
+        return text_bytes
+    else:
+        return []
 
 
-def group_text(text, group_len):
+def group_text(text, group_len) -> list:
     """
     Groups bytes in input
     :param text: values come in group from this text
@@ -53,7 +80,9 @@ def crc_16(bytes_or_string_to_calculate) -> int:
     # TODO Find out what to put: bytes or string
     return crc16(bytes_or_string_to_calculate)
 
-# def crc_8
+
+def crc_8():
+    pass
 
 
 def values_handler(str_values: str) -> list:
@@ -75,12 +104,12 @@ def values_handler(str_values: str) -> list:
         return [str_values[i:i + 4] for i in range(0, len(str_values), 4)]
 
 
-def check_sum_counter(values):
+def check_sum_counter(values, module: int = 65536):
     if type(values) is str:
         values = values_handler(values)
 
     total_sum = sum(map(lambda x: int(x, 16), values))
-    return format(total_sum % 65536 + total_sum // 65536, 'x')
+    return format(total_sum % module + total_sum // module, 'x')
 
 
 instruction = '1. При вводе значений без пробелов, введенная строка будет поделена по 4 символа и расчет будет производиться по ним\n' \
