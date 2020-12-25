@@ -51,7 +51,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.group()
         self.move_cursor_at_end()
 
-
     def move_cursor_at_end(self):
         cursor = self.ui.textEdit_input.textCursor()
         cursor.movePosition(QtGui.QTextCursor.End)
@@ -85,12 +84,11 @@ class MainWindow(QtWidgets.QMainWindow):
         :return:
         """
         text = self.ui.textEdit_input.toPlainText()
-        self.ui.textEdit_input.textChanged.disconnect()
-        if self.ui.checkBox_group.checkState():
-            self.ui.textEdit_input.setPlainText(' '.join(cs.group_text(text, self.ui.spinBox_group.value() * 2)))
-        else:
-            self.ui.textEdit_input.setPlainText(''.join(cs.group_text(text, 2)))
-        self.ui.textEdit_input.textChanged.connect(self.input_handler)
+        with TempDisconnect(self, self.input_handler):
+            if self.ui.checkBox_group.checkState():
+                self.ui.textEdit_input.setPlainText(' '.join(cs.group_text(text, self.ui.spinBox_group.value() * 2)))
+            else:
+                self.ui.textEdit_input.setPlainText(''.join(cs.group_text(text, 2)))
 
     def change_endian(self):
         """
@@ -103,6 +101,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.endian = 'little'
 
         self.ui.pushButton_endian.setText(self.endian)
+        text = self.ui.textEdit_input.toPlainText()
 
     @classmethod
     def start(cls):
@@ -122,6 +121,20 @@ class MainWindow(QtWidgets.QMainWindow):
         tb = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
         print(tb)
         QtWidgets.QApplication.quit()
+
+
+class TempDisconnect:
+    def __init__(self, QMainWindow, method_to_disconnect):
+        self.qt_window = QMainWindow
+        self.connected_method = method_to_disconnect
+
+    def __enter__(self):
+        self.qt_window.ui.textEdit_input.textChanged.disconnect()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.qt_window.ui.textEdit_input.textChanged.connect(self.connected_method)
+
+
 
 
 if __name__ == '__main__':

@@ -26,3 +26,9 @@ class Test(TestCase):
         with self.subTest('Not correct len'):
             self.assertEqual(['0001', 'D0A5', '2758', '02'],
                              group_text('0001D0A5275802', 4))
+
+    def test_reverse_bytes(self):
+        with self.subTest('Str input'):
+            self.assertEqual(['34', '12', '78', '56', '90'], reverse_bytes('1234567890'))
+        with self.subTest('List input'):
+            self.assertEqual(['34', '12', '78', '56', '90'], reverse_bytes(['1234', '5678', '90']))

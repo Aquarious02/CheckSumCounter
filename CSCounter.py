@@ -8,6 +8,22 @@ def text_handler(text, text_format, to_strip=False):
     :param text_format:
     :return:
     """
+    pass
+
+
+def reverse_bytes(text):
+    """
+    Changes endian in input
+    :return: list of bytes, group by 1
+    """
+    if type(text) is list:
+        text = ''.join(text)
+    elif type(text) is str:
+        text = text.replace(' ', '')
+    text_bytes = group_text(text, 2)
+    for i in range(0, len(text_bytes) // 2 + 1, 2):
+        text_bytes[i], text_bytes[i + 1] = text_bytes[i + 1], text_bytes[i]
+    return text_bytes
 
 
 def group_text(text, group_len):
