@@ -345,6 +345,9 @@
            </item>
            <item>
             <widget class="QSpinBox" name="spinBox_group">
+             <property name="statusTip">
+              <string>Группировать по байтам</string>
+             </property>
              <property name="minimum">
               <number>1</number>
              </property>

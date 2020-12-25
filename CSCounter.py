@@ -1,6 +1,26 @@
 from crcmod import mkCrcFun
 
 
+def text_handler(text, text_format, to_strip=False):
+    """
+    transform text to format. Or strip format
+    :param text:
+    :param text_format:
+    :return:
+    """
+
+
+def group_text(text, group_len):
+    """
+    Groups bytes in input
+    :param text: values come in group from this text
+    :param group_len: len of groups in symbols
+    :return:
+    """
+    text = text.replace(' ', '')
+    return [text[i:i + group_len] for i in range(0, len(text), group_len)]
+
+
 def crc_16(bytes_or_string_to_calculate) -> int:
     """
     Подсчет контрольной суммы по алгоритму CRC16 CCITT-FALSE
@@ -45,6 +65,7 @@ def check_sum_counter(values):
 
     total_sum = sum(map(lambda x: int(x, 16), values))
     return format(total_sum % 65536 + total_sum // 65536, 'x')
+
 
 instruction = '1. При вводе значений без пробелов, введенная строка будет поделена по 4 символа и расчет будет производиться по ним\n' \
               '2. Ввод производится в шестнадцатеричной системе счисления\n'

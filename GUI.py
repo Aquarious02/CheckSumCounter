@@ -1,10 +1,10 @@
 import traceback
 import sys
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 
 from scheme import Ui_MainWindow
-from CSCounter import *
+import CSCounter as cs
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -22,10 +22,12 @@ class MainWindow(QtWidgets.QMainWindow):
         # Put "1" in polynomial start
         self.crc_8_params = {'poly': 0x131, 'rev': False, 'initCrc': 0xFF, 'xorOut': 0x00}
         self.crc_16_params = {'poly': 0x11021, 'rev': False, 'initCrc': 0xFFFF, 'xorOut': 0x0000}
+        self.input = ''
 
         #
         # input actions connecting
         #
+        self.ui.textEdit_input.textChanged.connect(self.input_handler)
         self.ui.pushButton_calculate.clicked.connect(self.calculate)
         self.ui.radioButton_bin.clicked.connect((lambda: self.base_change(2)))
         self.ui.radioButton_dec.clicked.connect((lambda: self.base_change(10)))
@@ -39,6 +41,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.checkBox_group.clicked.connect(self.group)
         self.ui.spinBox_group.valueChanged.connect(self.group)
         self.ui.pushButton_endian.clicked.connect(self.change_endian)
+        self.change_endian()
+
+    def input_handler(self):
+        """
+        Input processing
+        :return:
+        """
+        self.group()
+        self.move_cursor_at_end()
+
+
+    def move_cursor_at_end(self):
+        cursor = self.ui.textEdit_input.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        self.ui.textEdit_input.setTextCursor(cursor)
 
     def calculate(self):
         """
@@ -67,14 +84,25 @@ class MainWindow(QtWidgets.QMainWindow):
         Groups bytes in input
         :return:
         """
-        pass
+        text = self.ui.textEdit_input.toPlainText()
+        self.ui.textEdit_input.textChanged.disconnect()
+        if self.ui.checkBox_group.checkState():
+            self.ui.textEdit_input.setPlainText(' '.join(cs.group_text(text, self.ui.spinBox_group.value() * 2)))
+        else:
+            self.ui.textEdit_input.setPlainText(''.join(cs.group_text(text, 2)))
+        self.ui.textEdit_input.textChanged.connect(self.input_handler)
 
     def change_endian(self):
         """
         Changes endian and button text
         :return:
         """
-        pass
+        if self.endian == 'little':
+            self.endian = 'big'
+        else:
+            self.endian = 'little'
+
+        self.ui.pushButton_endian.setText(self.endian)
 
     @classmethod
     def start(cls):
@@ -94,3 +122,7 @@ class MainWindow(QtWidgets.QMainWindow):
         tb = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
         print(tb)
         QtWidgets.QApplication.quit()
+
+
+if __name__ == '__main__':
+    MainWindow.start()
