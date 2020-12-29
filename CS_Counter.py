@@ -21,28 +21,23 @@ class MainWindow(QtWidgets.QMainWindow):
         self.endian = 'little'
         self.old_group_len = None
         self.base = 16
+        # Put "1" in polynomial start
         self.crc_8_init_params = {'poly': 0x131, 'rev': False, 'initCrc': False, 'xorOut': 0xFF}
         self.crc_16_init_params = {'poly': 0x11021, 'rev': False, 'initCrc': 0xFFFF, 'xorOut': 0x0000}
-        # Put "1" in polynomial start
-        self.crc_8_params = {self.ui.lineEdit_poly_8: self.crc_8_init_params['poly'],
-                             self.ui.comboBox_revert_8: self.crc_8_init_params['rev'],
-                             self.ui.lineEdit_init_8: self.crc_8_init_params['initCrc'],
-                             self.ui.lineEdit_XorOut_8: self.crc_8_init_params['xorOut']}
-
-        self.crc_16_params = {self.ui.lineEdit_poly_16: self.crc_16_init_params['poly'],
-                              self.ui.comboBox_revert_16: self.crc_16_init_params['rev'],
-                              self.ui.lineEdit_init_16: self.crc_16_init_params['initCrc'],
-                              self.ui.lineEdit_XorOut_16: self.crc_16_init_params['xorOut']}
+        self.crc_8_widgets = {'poly': self.ui.lineEdit_poly_8, 'rev': self.ui.comboBox_revert_8, 'initCrc': self.ui.lineEdit_init_8, 'xorOut': self.ui.lineEdit_XorOut_8}
+        self.crc_16_widgets = {'poly': self.ui.lineEdit_poly_16, 'rev': self.ui.comboBox_revert_16, 'initCrc': self.ui.lineEdit_init_16, 'xorOut': self.ui.lineEdit_XorOut_16}
         # Writing crc params
-        for params in (self.crc_8_params, self.crc_16_params):
-            for widget, value in params.items():
+        for widgets, init_params in zip(((self.ui.lineEdit_poly_8, self.ui.comboBox_revert_8, self.ui.lineEdit_init_8, self.ui.lineEdit_XorOut_8),
+                                         (self.ui.lineEdit_poly_16, self.ui.comboBox_revert_16, self.ui.lineEdit_init_16, self.ui.lineEdit_XorOut_16)),
+                                        (self.crc_8_init_params, self.crc_16_params)):
+            for widget, key in zip(widgets, init_params.keys()):
                 widget_name = widget.objectName()
                 if 'comboBox' in widget_name:
-                    widget.setCurrentIndex(0 if value is True else 1)
+                    widget.setCurrentIndex(0 if init_params[key] is True else 1)
                 elif 'poly' in widget_name:
-                    widget.setText(format(value, 'x')[1:])
+                    widget.setText(format(init_params[key], 'x')[1:])
                 else:
-                    widget.setText(format(value, 'x'))
+                    widget.setText(format(init_params[key], 'x'))
 
         self.input = ''
 
@@ -71,7 +66,7 @@ class MainWindow(QtWidgets.QMainWindow):
         Locks some functions. The will be available in future
         :return:
         """
-        locked_functions = [self.ui.radioButton_bin,  self.ui.radioButton_dec,  self.ui.radioButton_hex]
+        locked_functions = [self.ui.radioButton_bin, self.ui.radioButton_dec, self.ui.radioButton_hex]
         for function in locked_functions:
             function.setEnabled(False)
 
@@ -185,9 +180,6 @@ class MainWindow(QtWidgets.QMainWindow):
             # text.replace(' ', '')
             self.ui.textEdit_input.setPlainText(text)
 
-
-
-
     def group(self):
         """
         Groups bytes in input
@@ -199,7 +191,8 @@ class MainWindow(QtWidgets.QMainWindow):
             text = self.ui.textEdit_input.toPlainText()
             with TempDisconnect(self, self.input_handler):
                 if self.ui.checkBox_group.checkState():
-                    self.ui.textEdit_input.setPlainText(' '.join(cs.group_text(text, self.ui.spinBox_group.value() * 2)))
+                    self.ui.textEdit_input.setPlainText(
+                        ' '.join(cs.group_text(text, self.ui.spinBox_group.value() * 2)))
                 else:
                     self.ui.textEdit_input.setPlainText(''.join(cs.group_text(text, 2)))
 
@@ -246,6 +239,7 @@ class TempDisconnect:
     """
     Temporarily disconnect the method from QMainWindow, and connects again with exit
     """
+
     def __init__(self, QMainWindow, method_to_disconnect):
         self.qt_window = QMainWindow
         self.connected_method = method_to_disconnect
