@@ -178,8 +178,10 @@ class MainWindow(QtWidgets.QMainWindow):
         Groups bytes in input
         :return:
         """
-        if self.ui.checkBox_transform.checkState():
-            pass
+        init_transform_check_state = self.ui.checkBox_transform.checkState()
+        if init_transform_check_state:
+            self.ui.checkBox_transform.setChecked(False)
+            self.transform()
         else:
             text = self.ui.textEdit_input.toPlainText()
             with TempDisconnect(self, self.input_handler):
@@ -188,6 +190,10 @@ class MainWindow(QtWidgets.QMainWindow):
                         ' '.join(cs.group_text(text, self.ui.spinBox_group.value() * 2)))
                 else:
                     self.ui.textEdit_input.setPlainText(''.join(cs.group_text(text, 2)))
+
+        if init_transform_check_state:
+            self.ui.checkBox_transform.setChecked(True)
+            self.transform()
 
     def change_endian(self):
         """
