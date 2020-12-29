@@ -70,7 +70,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_input_settings">
         <property name="statusTip">
@@ -142,7 +142,7 @@
               <string/>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>2</number>
              </property>
              <widget class="QWidget" name="page_sum">
               <property name="geometry">
@@ -202,6 +202,9 @@
                 <height>141</height>
                </rect>
               </property>
+              <property name="statusTip">
+               <string>CRC - 8. Все данные в шестнадцатеричном виде</string>
+              </property>
               <attribute name="label">
                <string>CRC-8</string>
               </attribute>
@@ -217,7 +220,11 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_poly_8"/>
+                <widget class="QLineEdit" name="lineEdit_poly_8">
+                 <property name="statusTip">
+                  <string>Производящий полином</string>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_init_8">
@@ -230,7 +237,11 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEdit_init_8"/>
+                <widget class="QLineEdit" name="lineEdit_init_8">
+                 <property name="statusTip">
+                  <string>Стартовые данные - значения регистров на момент начала вычислений</string>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="0">
                 <widget class="QLabel" name="label_revert_8">
@@ -264,11 +275,18 @@
                 </widget>
                </item>
                <item row="3" column="1">
-                <widget class="QLineEdit" name="lineEdit_XorOut_8"/>
+                <widget class="QLineEdit" name="lineEdit_XorOut_8">
+                 <property name="statusTip">
+                  <string>Число, с которым складывается по модулю 2 полученный результат</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
              <widget class="QWidget" name="page_crc16">
+              <property name="statusTip">
+               <string>CRC - 16. Все данные в шестнадцатеричном виде</string>
+              </property>
               <attribute name="label">
                <string>CRC-16</string>
               </attribute>
@@ -284,7 +302,11 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_poly_16"/>
+                <widget class="QLineEdit" name="lineEdit_poly_16">
+                 <property name="statusTip">
+                  <string>Производящий полином</string>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_init_16">
@@ -297,7 +319,11 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEdit_init_16"/>
+                <widget class="QLineEdit" name="lineEdit_init_16">
+                 <property name="statusTip">
+                  <string>Стартовые данные - значения регистров на момент начала вычислений</string>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="0">
                 <widget class="QLabel" name="label_revert_16">
@@ -331,7 +357,11 @@
                 </widget>
                </item>
                <item row="3" column="1">
-                <widget class="QLineEdit" name="lineEdit_XorOut_16"/>
+                <widget class="QLineEdit" name="lineEdit_XorOut_16">
+                 <property name="statusTip">
+                  <string>Число, с которым складывается по модулю 2 полученный результат</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>

@@ -21,9 +21,29 @@ class MainWindow(QtWidgets.QMainWindow):
         self.endian = 'little'
         self.old_group_len = None
         self.base = 16
+        self.crc_8_init_params = {'poly': 0x131, 'rev': False, 'initCrc': False, 'xorOut': 0xFF}
+        self.crc_16_init_params = {'poly': 0x11021, 'rev': False, 'initCrc': 0xFFFF, 'xorOut': 0x0000}
         # Put "1" in polynomial start
-        self.crc_8_params = {'poly': 0x131, 'rev': False, 'initCrc': 0xFF, 'xorOut': 0x00}
-        self.crc_16_params = {'poly': 0x11021, 'rev': False, 'initCrc': 0xFFFF, 'xorOut': 0x0000}
+        self.crc_8_params = {self.ui.lineEdit_poly_8: self.crc_8_init_params['poly'],
+                             self.ui.comboBox_revert_8: self.crc_8_init_params['rev'],
+                             self.ui.lineEdit_init_8: self.crc_8_init_params['initCrc'],
+                             self.ui.lineEdit_XorOut_8: self.crc_8_init_params['xorOut']}
+
+        self.crc_16_params = {self.ui.lineEdit_poly_16: self.crc_16_init_params['poly'],
+                              self.ui.comboBox_revert_16: self.crc_16_init_params['rev'],
+                              self.ui.lineEdit_init_16: self.crc_16_init_params['initCrc'],
+                              self.ui.lineEdit_XorOut_16: self.crc_16_init_params['xorOut']}
+        # Writing crc params
+        for params in (self.crc_8_params, self.crc_16_params):
+            for widget, value in params.items():
+                widget_name = widget.objectName()
+                if 'comboBox' in widget_name:
+                    widget.setCurrentIndex(0 if value is True else 1)
+                elif 'poly' in widget_name:
+                    widget.setText(format(value, 'x')[1:])
+                else:
+                    widget.setText(format(value, 'x'))
+
         self.input = ''
 
         #
@@ -97,9 +117,26 @@ class MainWindow(QtWidgets.QMainWindow):
                 module = int(self.ui.lineEdit_abs_2.text())
                 result = cs.check_sum_counter(cs.group_text(text, 4), module)
             elif cs_name == 'CRC-8':
-                pass
+                params = []
+                for widget, value in self.crc_8_params.items():
+                    widget_name = widget.objectName()
+                    if 'comboBox' in widget_name:
+                        self.crc_8_params[widget] = True if widget.currentText() is 'True' else False  # TODO eval?
+                    elif 'poly' in widget_name:
+                        self.crc_8_params[widget] = int(f'1{widget.text()}', 16)  # Put "1" in polynomial start
+                    else:
+                        self.crc_8_params[widget] = value
+
+                print(params)
             elif cs_name == 'CRC-16':
-                pass
+                params = []
+                for param_line_edit in [self.ui.lineEdit_poly_16, self.ui.lineEdit_init_16,
+                                        self.ui.comboBox_revert_16, self.ui.lineEdit_XorOut_16]:
+                    if 'comboBox' in param_line_edit.objectName():
+                        params.append(True if param_line_edit.currentText() is 'True' else False)
+                    else:
+                        params.append(param_line_edit.text())
+                print(params)
             self.ui.textBrowser_output.setText(result)
 
     def change_base(self, new_base):
