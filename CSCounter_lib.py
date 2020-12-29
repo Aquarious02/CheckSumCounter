@@ -64,10 +64,6 @@ def group_text(text, group_len) -> list:
     return [text[i:i + group_len] for i in range(0, len(text), group_len)]
 
 
-def crc():
-    pass
-
-
 def crc_16(bytes_or_string_to_calculate) -> int:
     """
     Подсчет контрольной суммы по алгоритму CRC16 CCITT-FALSE

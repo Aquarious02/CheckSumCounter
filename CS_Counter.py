@@ -104,30 +104,28 @@ class MainWindow(QtWidgets.QMainWindow):
         cs_name = self.ui.toolBox_CS.itemText(self.ui.toolBox_CS.currentIndex())
 
         if self.ui.checkBox_transform.checkState():
-            pass # TODO take in account format
+            text = cs.text_handler(text=self.ui.textEdit_input.toPlainText(),
+                                   text_format=self.ui.lineEdit_format.text(), to_strip=True)
         else:
             text = self.ui.textEdit_input.toPlainText()
-            if cs_name == 'Суммирование':
-                module = int(self.ui.lineEdit_abs_2.text())
-                result = cs.check_sum_counter(cs.group_text(text, 4), module)
-            elif 'CRC' in cs_name:
-                if cs_name == 'CRC-8':
-                    widgets_dict, params_dict = self.crc_8_widgets, self.crc_8_init_params
+        if cs_name == 'Суммирование':
+            module = int(self.ui.lineEdit_abs_2.text())
+            result = cs.check_sum_counter(cs.group_text(text, 4), module)
+        elif 'CRC' in cs_name:
+            if cs_name == 'CRC-8':
+                widgets_dict, params_dict = self.crc_8_widgets, self.crc_8_init_params
+            else:
+                widgets_dict, params_dict = self.crc_16_widgets, self.crc_16_init_params
+            for param_name, widget in widgets_dict.items():
+                if param_name == 'rev':
+                    params_dict[param_name] = True if widget.currentText() is 'True' else False  # TODO eval?
+                elif param_name == 'poly':
+                    params_dict[param_name] = int(f'1{widget.text()}', 16)  # Put "1" in polynomial start
                 else:
-                    widgets_dict, params_dict = self.crc_16_widgets, self.crc_16_init_params
-
-                for param_name, widget in widgets_dict.items():
-                    if param_name == 'rev':
-                        params_dict[param_name] = True if widget.currentText() is 'True' else False  # TODO eval?
-                    elif param_name == 'poly':
-                        params_dict[param_name] = int(f'1{widget.text()}', 16)  # Put "1" in polynomial start
-                    else:
-                        params_dict[param_name] = int(widget.text(), 16)
-
-                    crc_func = mkCrcFun(**params_dict)
-                    result = crc_func(cs.bytes_from_text(text))
-
-            self.ui.textBrowser_output.setText(format(result, 'x'))
+                    params_dict[param_name] = int(widget.text(), 16)
+                crc_func = mkCrcFun(**params_dict)
+                result = crc_func(cs.bytes_from_text(text))
+        self.ui.textBrowser_output.setText(format(result, 'x'))
 
     def change_base(self, new_base):
         """
