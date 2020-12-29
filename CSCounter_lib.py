@@ -67,6 +67,7 @@ def group_text(text, group_len) -> list:
 def crc():
     pass
 
+
 def crc_16(bytes_or_string_to_calculate) -> int:
     """
     Подсчет контрольной суммы по алгоритму CRC16 CCITT-FALSE
@@ -107,12 +108,12 @@ def values_handler(str_values: str) -> list:
         return [str_values[i:i + 4] for i in range(0, len(str_values), 4)]
 
 
-def check_sum_counter(values, module: int = 65536):
+def check_sum_counter(values, module: int = 65536) -> int:
     if type(values) is str:
         values = values_handler(values)
 
     total_sum = sum(map(lambda x: int(x, 16), values))
-    return format(total_sum % module + total_sum // module, 'x')
+    return total_sum % module + total_sum // module
 
 
 instruction = '1. При вводе значений без пробелов, введенная строка будет поделена по 4 символа и расчет будет производиться по ним\n' \
