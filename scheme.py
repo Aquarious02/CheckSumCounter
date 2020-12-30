@@ -200,8 +200,6 @@ class Ui_MainWindow(object):
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 751, 21))
         self.menubar.setObjectName("menubar")
-        self.menu = QtWidgets.QMenu(self.menubar)
-        self.menu.setObjectName("menu")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -222,11 +220,10 @@ class Ui_MainWindow(object):
         self.action_little_endian.setObjectName("action_little_endian")
         self.action_big_endian = QtWidgets.QAction(MainWindow)
         self.action_big_endian.setObjectName("action_big_endian")
-        self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.toolBox_CS.setCurrentIndex(2)
+        self.toolBox_CS.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -290,7 +287,6 @@ class Ui_MainWindow(object):
         self.pushButton_endian.setStatusTip(_translate("MainWindow", "Порядок байт"))
         self.pushButton_endian.setText(_translate("MainWindow", "PushButton"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_output_settings), _translate("MainWindow", "Вывод"))
-        self.menu.setTitle(_translate("MainWindow", "Настройки"))
         self.action_by1.setText(_translate("MainWindow", "1"))
         self.action_by2.setText(_translate("MainWindow", "2"))
         self.action_by4.setText(_translate("MainWindow", "4"))

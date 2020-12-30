@@ -22,12 +22,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.endian = 'little'
         self.old_group_len = None
         self.base = 16
+        self.text_format = '{}_ш'
+        self.input = ''
         # Put "1" in polynomial start
         self.crc_8_init_params = {'poly': 0x131, 'rev': False, 'initCrc': 0xFF, 'xorOut': 0x00}
         self.crc_16_init_params = {'poly': 0x11021, 'rev': False, 'initCrc': 0xFFFF, 'xorOut': 0x0000}
         self.crc_8_widgets = {'poly': self.ui.lineEdit_poly_8, 'rev': self.ui.comboBox_revert_8, 'initCrc': self.ui.lineEdit_init_8, 'xorOut': self.ui.lineEdit_XorOut_8}
         self.crc_16_widgets = {'poly': self.ui.lineEdit_poly_16, 'rev': self.ui.comboBox_revert_16, 'initCrc': self.ui.lineEdit_init_16, 'xorOut': self.ui.lineEdit_XorOut_16}
+
+        #
         # Writing crc params
+        #
         for widgets, params in zip((self.crc_8_widgets, self.crc_16_widgets),
                                    (self.crc_8_init_params, self.crc_16_init_params)):
             for key in widgets.keys():
@@ -37,8 +42,6 @@ class MainWindow(QtWidgets.QMainWindow):
                     widgets[key].setText(format(params[key], 'x')[1:])
                 else:
                     widgets[key].setText(format(params[key], 'x'))
-
-        self.input = ''
 
         #
         # input actions connecting
@@ -52,8 +55,9 @@ class MainWindow(QtWidgets.QMainWindow):
         #
         # output actions connecting
         #
-        self.ui.lineEdit_format.editingFinished.connect(self.transform)
+        # self.ui.lineEdit_format.editingFinished.connect(self.transform)
         self.ui.checkBox_transform.clicked.connect(self.transform)
+        self.ui.lineEdit_format.textEdited.connect(self.update_format)
         self.ui.checkBox_group.clicked.connect(self.group)
         self.ui.spinBox_group.valueChanged.connect(self.group)
         self.ui.pushButton_endian.clicked.connect(self.change_endian)
@@ -155,23 +159,35 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.base = new_base
 
+    def update_format(self):
+        """
+        Updates text format to transform input
+        :return:
+        """
+        if self.ui.checkBox_transform.checkState():
+            self.ui.checkBox_transform.setChecked(False)
+            self.transform()
+            self.text_format = self.ui.lineEdit_format.text()
+            self.ui.checkBox_transform.setChecked(True)
+            self.transform()
+        else:
+            self.text_format = self.ui.lineEdit_format.text()
+
     def transform(self):
         """
         Transforms (puts or strips) input according to format
         :return:
         """
-        text_format = self.ui.lineEdit_format.text()
+        # text_format = self.ui.lineEdit_format.text()
         text = self.ui.textEdit_input.toPlainText()
         if self.ui.checkBox_transform.checkState():
-            text = cs.text_handler(text, text_format, to_strip=False)
+            text = cs.text_handler(text, self.text_format, to_strip=False)
             with TempDisconnect(self, self.input_handler):
                 self.ui.textEdit_input.setPlainText(text)
         else:
-            text = cs.text_handler(text, text_format, to_strip=True)
-            # text_format = text_format.replace('{}', '')
-            # text = text.replace(text_format, '')
-            # text.replace(' ', '')
-            self.ui.textEdit_input.setPlainText(text)
+            text = cs.text_handler(text, self.text_format, to_strip=True)
+            with TempDisconnect(self, self.input_handler):
+                self.ui.textEdit_input.setPlainText(text)
 
     def group(self):
         """
@@ -206,13 +222,18 @@ class MainWindow(QtWidgets.QMainWindow):
             self.endian = 'little'
 
         self.ui.pushButton_endian.setText(self.endian)
-        if self.ui.checkBox_transform.checkState():
-            pass
-        else:
-            text = cs.reverse_bytes(self.ui.textEdit_input.toPlainText())
-            with TempDisconnect(self, self.input_handler):
-                self.ui.textEdit_input.setPlainText(''.join(text))
-            self.group()
+        init_transform_check_state = self.ui.checkBox_transform.checkState()
+        if init_transform_check_state:
+            self.ui.checkBox_transform.setChecked(False)
+            self.transform()
+        text = cs.reverse_bytes(self.ui.textEdit_input.toPlainText())
+        with TempDisconnect(self, self.input_handler):
+            self.ui.textEdit_input.setPlainText(''.join(text))
+        self.group()
+
+        if init_transform_check_state:
+            self.ui.checkBox_transform.setChecked(True)
+            self.transform()
 
     @classmethod
     def start(cls):

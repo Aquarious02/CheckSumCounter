@@ -40,3 +40,16 @@ class Test(TestCase):
     def test_bytes_from_text(self):
         text = '1234567890'
         self.assertEqual(b'\x124Vx\x90', bytes_from_text(text))
+
+    def test_test_handler(self):
+        text = '1234 5678 90'
+        # text = '0x1234_ш, 0x5678_ш, 0x90_ш,'
+        with self.subTest('Format after {}'):
+            self.assertEqual('1234_ш, 5678_ш, 90_ш,', text_handler(text, text_format='{}_ш,'))
+        with self.subTest('Format before {}'):
+            text_format = '0x{}_ш,'
+            formatted_text = text_handler(text, text_format=text_format)
+            self.assertEqual(text, text_handler(formatted_text, text_format, to_strip=True))
+
+
+

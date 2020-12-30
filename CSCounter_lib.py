@@ -6,7 +6,7 @@ def text_handler(text: str, text_format: str, to_strip=False) -> str:
     transform text to format. Or strip format
     :param text: text to transofrm
     :param text_format: to use in str.format. e.g. {}_x,
-    :param to_strip: remove format if True
+    :param to_strip: remove format if True (Returns with spaces)
     :return:
     """
     if not to_strip:
@@ -15,9 +15,12 @@ def text_handler(text: str, text_format: str, to_strip=False) -> str:
             text_blocks[i] = text_format.format(number)
         return ' '.join(text_blocks)
     else:
-        text_format = text_format.replace('{}', '')
-        text = text.replace(text_format, '')
-        return text.replace(' ', '')
+        text_format = text_format.split('{}')
+        text_blocks = text.split()
+        start_len, end_len = len(text_format[0]), len(text_format[1])
+        for i, number in enumerate(text_blocks):
+            text_blocks[i] = number[start_len: -end_len]
+        return ' '.join(text_blocks)
 
 
 def bytes_from_text(text):
