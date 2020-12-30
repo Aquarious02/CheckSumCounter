@@ -19,6 +19,16 @@ class Test(TestCase):
             with self.subTest(f'user input: {user_input}'):
                 self.assertEqual('fa0f', check_sum_counter(user_input))
 
+    def test_crc(self):
+        # test_seq = '123456789'.encode('utf8')
+        test_seq = b'123456789'
+        with self.subTest('CRC-8 for "123456789"'):
+            crc = mkCrcFun(0x131, rev=False, initCrc=0xFF, xorOut=0x00)  # Put "1" in polynomial start
+            self.assertEqual('f7', format(crc(test_seq), 'x'))
+        with self.subTest('CRC-16 for "123456789"'):
+            crc = mkCrcFun(poly=0x11021, rev=False, initCrc=0xFFFF, xorOut=0x0000)
+            self.assertEqual('29b1', format(crc(test_seq), 'x'))
+
     def test_group_text(self):
         for user_input in self.user_inputs_to_split:
             with self.subTest(f'user input: {user_input}'):

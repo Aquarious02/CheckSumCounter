@@ -117,7 +117,6 @@ def check_sum_counter(values, module: int = 65536) -> int:
     total_sum = sum(map(lambda x: int(x, 16), values))
     return total_sum % module + total_sum // module
 
-
 instruction = '1. При вводе значений без пробелов, введенная строка будет поделена по 4 символа и расчет будет производиться по ним\n' \
               '2. Ввод производится в шестнадцатеричной системе счисления\n'
 
