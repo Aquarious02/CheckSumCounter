@@ -23,6 +23,13 @@ def text_handler(text: str, text_format: str, to_strip=False) -> str:
         return ' '.join(text_blocks)
 
 
+def text_from_bytes(_bytes:bytes) -> str:
+    text = []
+    for byte in _bytes:
+        text.append(format(byte, '02x'))
+    return ''.join(text)
+
+
 def bytes_from_text(text):
     if type(text) is list:
         text = ''.join(text)
@@ -82,10 +89,6 @@ def crc_16(bytes_or_string_to_calculate) -> int:
 
     # TODO Find out what to put: bytes or string
     return crc16(bytes_or_string_to_calculate)
-
-
-def crc_8():
-    pass
 
 
 def values_handler(str_values: str) -> list:

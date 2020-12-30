@@ -1,4 +1,5 @@
 import traceback
+from math import ceil
 import sys
 
 from PyQt5 import QtCore, QtWidgets, QtGui
@@ -22,6 +23,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.base = 16
         self.text_format = '{}_ш,'
         self.input = ''
+        self.control_pressed = False
         # Put "1" in polynomial start
         self.crc_8_init_params = {'poly': 0x131, 'rev': False, 'initCrc': 0xFF, 'xorOut': 0x00}
         self.crc_16_init_params = {'poly': 0x11021, 'rev': False, 'initCrc': 0xFFFF, 'xorOut': 0x0000}
@@ -63,6 +65,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.change_endian()
         self.locker()
 
+    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
+        if event.key() == QtCore.Qt.Key_Control:
+            self.control_pressed = True
+        else:
+            self.control_pressed = False
+
+    def keyReleaseEvent(self, event: QtGui.QKeyEvent) -> None:
+        if event.key() == QtCore.Qt.Key_Control:
+            self.control_pressed = False
+
     def locker(self):
         """
         Locks some functions. The will be available in future
@@ -77,8 +89,27 @@ class MainWindow(QtWidgets.QMainWindow):
         Input processing
         :return:
         """
+        if self.control_pressed:
+            # TODO Handle text pasting!
+            # self.control_pressed = False
+            text = cs.text_from_bytes(self.ui.textEdit_input.toPlainText().encode('utf8'))
+            with TempDisconnect(self, self.input_handler):
+                self.ui.textEdit_input.setPlainText(text)
         self.group()
         self.move_cursor_at_end()
+        self.ui.textEdit_input.setStatusTip(f'Поле ввода (всего байт: {self.bytes_count})')
+
+    @property
+    def bytes_count(self) -> int:
+        """
+        Counts how many bytes in input
+        :return:
+        """
+        whole_text = self.ui.textEdit_input.toPlainText()
+        if self.ui.checkBox_transform.checkState():
+            whole_text = cs.text_handler(whole_text, self.text_format, to_strip=True)
+        whole_text = whole_text.replace(' ', '')
+        return ceil(len(whole_text) / 2)
 
     def set_text(self, text):
         """
