@@ -17,12 +17,10 @@ class MainWindow(QtWidgets.QMainWindow):
         #
         # variables
         #
-
-        self.current_CS = None
         self.endian = 'little'
         self.old_group_len = None
         self.base = 16
-        self.text_format = '{}_ш'
+        self.text_format = '{}_ш,'
         self.input = ''
         # Put "1" in polynomial start
         self.crc_8_init_params = {'poly': 0x131, 'rev': False, 'initCrc': 0xFF, 'xorOut': 0x00}
@@ -52,6 +50,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.radioButton_dec.clicked.connect((lambda: self.change_base(10)))
         self.ui.radioButton_hex.clicked.connect((lambda: self.change_base(16)))
 
+        self.ui.lineEdit_format.setText(self.text_format)
         #
         # output actions connecting
         #
@@ -186,8 +185,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.ui.textEdit_input.setPlainText(text)
         else:
             text = cs.text_handler(text, self.text_format, to_strip=True)
-            with TempDisconnect(self, self.input_handler):
-                self.ui.textEdit_input.setPlainText(text)
+            # with TempDisconnect(self, self.input_handler):
+            #     self.ui.textEdit_input.setPlainText(text)
+            self.ui.textEdit_input.setPlainText(text)
 
     def group(self):
         """

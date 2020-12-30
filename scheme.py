@@ -229,6 +229,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Калькулятор КС"))
+        self.textEdit_input.setStatusTip(_translate("MainWindow", "Поле ввода"))
         self.textBrowser_output.setStatusTip(_translate("MainWindow", "Вывод результата расчета контрольной суммы. В шестнадцатеричном виде"))
         self.tab_input_settings.setStatusTip(_translate("MainWindow", "Настройки ввода"))
         self.groupBox.setTitle(_translate("MainWindow", "Системы счисления"))
@@ -277,7 +278,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_input_settings), _translate("MainWindow", "Ввод"))
         self.tab_output_settings.setStatusTip(_translate("MainWindow", "Настройки отображения"))
         self.label_format.setText(_translate("MainWindow", "Формат"))
-        self.lineEdit_format.setStatusTip(_translate("MainWindow", "Формат для преобразования вывода. В {} будет записываться число"))
+        self.lineEdit_format.setStatusTip(_translate("MainWindow", "Формат для преобразования вывода. В {} будет записываться число. Внимание! Писать после фигурных скобок"))
         self.lineEdit_format.setText(_translate("MainWindow", "{}_ш,"))
         self.checkBox_group.setStatusTip(_translate("MainWindow", "Группировать/не группировать байты"))
         self.checkBox_group.setText(_translate("MainWindow", "группировать"))

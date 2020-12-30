@@ -33,6 +33,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="statusTip">
+           <string>Поле ввода</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -396,7 +399,7 @@
          <item>
           <widget class="QLineEdit" name="lineEdit_format">
            <property name="statusTip">
-            <string>Формат для преобразования вывода. В {} будет записываться число</string>
+            <string>Формат для преобразования вывода. В {} будет записываться число. Внимание! Писать после фигурных скобок</string>
            </property>
            <property name="text">
             <string>{}_ш,</string>
