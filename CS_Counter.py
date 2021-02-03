@@ -92,7 +92,14 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.control_pressed:
             # TODO Handle text pasting!
             # self.control_pressed = False
-            text = cs.text_from_bytes(self.ui.textEdit_input.toPlainText().encode('utf8'))
+            text_from_browser = self.ui.textEdit_input.toPlainText()
+            if self.ui.checkBox_as_text.checkState():
+                text = text_from_browser
+            else:
+                text = cs.text_from_bytes(text_from_browser.encode('utf8'))
+
+            text = text.replace('\n', '')
+            text = text.replace('  ', ' ')
             with TempDisconnect(self, self.input_handler):
                 self.ui.textEdit_input.setPlainText(text)
         self.group()
